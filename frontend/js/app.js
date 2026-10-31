@@ -13,7 +13,7 @@ const state = {
   atlas:"idle",
   nova:"idle",
   context:[
-    "Project: Launchpad",
+    "Project: CampusEats",
     "Goal: Startup onboarding",
     "Version: 1",
     "Status: In progress"
@@ -95,7 +95,7 @@ function startAgents(){
   $('atlasStatus').innerHTML='<span class="dot"></span> Researching user needs';
   $('novaStatus').innerHTML='<span class="dot"></span> Building prototype';
 
-  logEvent('Maya Chen','assigned parallel tasks to Atlas and Nova.','human');
+  logEvent('Niharika','assigned parallel tasks to Atlas and Nova.','human');
 
   logEvent('Atlas','started independent user research.','normal');
 
@@ -196,7 +196,7 @@ function changeRequirement(){
   $('version').textContent=state.version;
 
   $('contextDetails').innerHTML=
-    '<strong>PROJECT:</strong> Launchpad<br>'+
+    '<strong>PROJECT:</strong> CampusEats<br>'+
     '<strong>GOAL:</strong> Startup onboarding<br>'+
     '<strong>VERSION:</strong> '+state.version+'<br>'+
     '<strong>STATUS:</strong> Requirement updated<br>'+
@@ -217,7 +217,7 @@ function changeRequirement(){
   $('decisionText').textContent=
     'The project requirement has changed. Nova’s earlier proposal is now stale. Recover the latest context before submitting a new contribution.';
 
-  $('decisionOwner').textContent='HUMAN CONTROL · MAYA CHEN';
+  $('decisionOwner').textContent='HUMAN CONTROL · Niharika';
 
   $('atlasWorkState').textContent='REVALIDATE';
   $('novaWorkState').textContent='STALE';
@@ -229,7 +229,7 @@ function changeRequirement(){
 
   closeRequirement();
 
-  logEvent('Maya Chen','changed the shared requirement. Project moved to version '+state.version+'.','human');
+  logEvent('Niharika','changed the shared requirement. Project moved to version '+state.version+'.','human');
 
   logEvent('System','detected that Nova’s earlier proposal was based on an outdated version.','warning');
 
@@ -263,7 +263,7 @@ function recoverContext(){
     'Recovered shared project history, latest requirements and previous rejected/stale contribution.';
 
   $('contextDetails').innerHTML=
-    '<strong>PROJECT:</strong> Launchpad<br>'+
+    '<strong>PROJECT:</strong> CampusEats<br>'+
     '<strong>GOAL:</strong> Founder onboarding<br>'+
     '<strong>VERSION:</strong> '+state.version+'<br>'+
     '<strong>RESTORED:</strong> Current requirement<br>'+
@@ -371,35 +371,35 @@ function approveProposal(){
 
   $('preview').classList.add('updated');
 
-  $('lastEditor').textContent='Maya Chen + Nova';
+  $('lastEditor').textContent='Niharika + Nova';
 
   $('prototypeState').textContent='● Approved and published';
 
   $('decisionText').textContent=
     'Maya approved Nova’s proposal. The shared prototype has been updated to version '+state.version+'. Leo can now inspect the resulting experience.';
 
-  $('decisionOwner').textContent='APPROVED BY MAYA CHEN';
+  $('decisionOwner').textContent='APPROVED BY Niharika';
 
   $('projectStatus').textContent='● Updated prototype';
 
   $('contextDetails').innerHTML=
-    '<strong>PROJECT:</strong> Launchpad<br>'+
+    '<strong>PROJECT:</strong> CampusEats<br>'+
     '<strong>GOAL:</strong> Founder onboarding<br>'+
     '<strong>VERSION:</strong> '+state.version+'<br>'+
-    '<strong>APPROVED BY:</strong> Maya Chen<br>'+
+    '<strong>APPROVED BY:</strong> Niharika<br>'+
     '<strong>STATUS:</strong> Published';
 
   $('contextDetails').style.background='#e8f1e9';
 
   $('approveBtn').disabled=true;
 
-  addVersion('Version '+state.version+'.0','Approved by Maya Chen · Founder onboarding');
+  addVersion('Version '+state.version+'.0','Approved by Niharika · Founder onboarding');
 
-  logEvent('Maya Chen','approved Nova’s updated prototype proposal.','human');
+  logEvent('Niharika','approved Nova’s updated prototype proposal.','human');
 
   logEvent('System','published the approved changes to the shared prototype.','success');
 
-  logEvent('Leo Park','can now review the updated shared artifact.','human');
+  logEvent('Vaibhav','can now review the updated shared artifact.','human');
 
   notify('Approved! Shared prototype updated.');
 
@@ -428,11 +428,11 @@ function rejectProposal(){
   $('decisionText').textContent=
     'The human reviewer rejected this contribution. No changes have been published. A new direction is required.';
 
-  $('decisionOwner').textContent='REJECTED BY MAYA CHEN';
+  $('decisionOwner').textContent='REJECTED BY Niharika';
 
   $('novaWorkState').textContent='PAUSED';
 
-  logEvent('Maya Chen','rejected Nova’s contribution. The shared prototype remains unchanged.','human');
+  logEvent('Niharika','rejected Nova’s contribution. The shared prototype remains unchanged.','human');
 
   notify('Proposal rejected. Prototype unchanged.');
 
@@ -481,13 +481,13 @@ function redirectProposal(){
   $('decisionText').textContent=
     'Maya redirected Nova’s work. The agent must incorporate the new instruction and submit an updated proposal for human review.';
 
-  $('decisionOwner').textContent='DIRECTED BY MAYA CHEN';
+  $('decisionOwner').textContent='DIRECTED BY Niharika';
 
   $('novaWorkState').textContent='WORKING';
 
   $('novaWorkText').textContent='Applying human feedback: '+direction;
 
-  logEvent('Maya Chen','redirected Nova: '+direction,'human');
+  logEvent('Niharika','redirected Nova: '+direction,'human');
 
   setTimeout(()=>{
 
@@ -551,9 +551,9 @@ function escapeHTML(str){
 
 /* INITIAL DEMO EVENTS */
 
-logEvent('Maya Chen','created the Launchpad project and invited Leo, Atlas and Nova.','human');
+logEvent('Niharika','created the CampusEats project and invited Leo, Atlas and Nova.','human');
 
-logEvent('Leo Park','joined the shared workspace as product designer.','human');
+logEvent('Vaibhav','joined the shared workspace as product designer.','human');
 
 logEvent('System','initialized shared project context and prototype version 1.','success');
 

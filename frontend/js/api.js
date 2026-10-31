@@ -19,11 +19,15 @@
       ? await response.json()
       : await response.text();
 
-    if (!response.ok) {
-      const message = data && data.detail
-        ? data.detail
-        : `Request failed (${response.status})`;
-      throw new Error(message);
+        if (!response.ok) {
+      const detail = data && typeof data === "object" ? data.detail : null;
+      const message = detail && typeof detail === "object"
+        ? (detail.message || JSON.stringify(detail))
+        : (detail || `Request failed (${response.status})`);
+      const error = new Error(message);
+      error.status = response.status;
+      error.detail = detail;
+      throw error;
     }
     return data;
   }
