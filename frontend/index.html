@@ -1,452 +1,181 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Buildify Studio — Collaborative Intelligence</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ORBIT Studios</title>
 
-<link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-<div class="scroll-progress" id="scrollProgress"></div>
-<button class="scroll-top" id="scrollTop" aria-label="Back to top" title="Back to top">↑</button>
+<canvas id="sky"></canvas>
 
-<div class="app">
-
-<!-- SIDEBAR -->
-
-<aside class="sidebar">
-
-  <div class="brand">buildify<span>.</span></div>
-
-  <div class="workspace-label">WORKSPACE</div>
-
-  <div class="side-link active"><span class="side-icon">▦</span> Overview</div>
-  <div class="side-link"><span class="side-icon">◈</span> Projects</div>
-  <div class="side-link"><span class="side-icon">◎</span> Collaborators</div>
-  <div class="side-link"><span class="side-icon">⌘</span> AI agents</div>
-  <div class="side-link"><span class="side-icon">◷</span> Activity history</div>
-
-  <div class="workspace-label">CURRENT PROJECT</div>
-  <div class="side-link active"><span class="side-icon">◇</span> Launchpad</div>
-  <div class="side-link"><span class="side-icon">▤</span> Prototype</div>
-  <div class="side-link"><span class="side-icon">✓</span> Approvals</div>
-
-  <div class="sidebar-bottom">
-    <div class="online">
-      <span class="dot"></span>
-      All systems operational
-    </div>
+<div id="intro">
+  <div>
+    <div class="eyebrow"><i></i>Mission control for humans &amp; agents<i></i></div>
+    <h1 aria-label="ORBIT"><svg class="logo-svg" viewBox="-40 -24 540 148" role="img" aria-hidden="true">
+      <defs>
+        <linearGradient id="lg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#b9c8ff"/><stop offset="1" stop-color="#6f8cff"/></linearGradient>
+        <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff9d5c" stop-opacity="0"/><stop offset=".5" stop-color="#ffd9a0"/><stop offset="1" stop-color="#ff9d5c" stop-opacity="0"/></linearGradient>
+      </defs>
+      <g fill="none" stroke="url(#lg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+        <circle pathLength="1" cx="42" cy="50" r="42" style="--d:.1s"/>
+        <path pathLength="1" d="M122,100 V0 H154 A26,26 0 0 1 154,52 H122 M156,52 L190,100" style="--d:.35s"/>
+        <path pathLength="1" d="M236,100 V0 H266 A24,24 0 0 1 266,48 H236 M266,48 H272 A26,26 0 0 1 272,100 H236" style="--d:.6s"/>
+        <path pathLength="1" d="M326,0 V100" style="--d:.85s"/>
+        <path pathLength="1" d="M384,0 H460 M422,0 V100" style="--d:1.05s"/>
+      </g>
+      <g transform="rotate(-22 42 50)">
+        <ellipse pathLength="1" class="orbit" cx="42" cy="50" rx="78" ry="20" fill="none" stroke="url(#lg2)" stroke-width="2.2" style="--d:1.2s"/>
+        <circle r="6" fill="#ffd9a0" class="sat"><animateMotion dur="5s" repeatCount="indefinite" path="M-36,50 A78,20 0 1,1 120,50 A78,20 0 1,1 -36,50"/></circle>
+      </g>
+    </svg></h1>
+    <p>One source of truth &middot; <b>always in sync</b></p>
   </div>
+  <button id="enter">Enter the Orbit</button>
+</div>
+<div id="hint">hover the planets &middot; click one to dive straight in</div>
+<div id="tip"></div>
 
-</aside>
+<div id="toast"></div>
 
-<!-- MAIN -->
 
-<main class="main">
 
-  <header class="topbar">
-
-    <div class="breadcrumb">
-      Workspace / Projects / <strong>Launchpad</strong>
-    </div>
-
-    <div class="top-right">
-      <div class="avatar-stack">
-        <div class="avatar maya">MC</div>
-        <div class="avatar leo">LP</div>
-        <div class="avatar atlas">A</div>
-        <div class="avatar nova">N</div>
-      </div>
-      <button class="share" onclick="notify('Collaboration link copied (demo).')">
-        Share workspace ↗
-      </button>
-    </div>
-
+<div id="dash">
+  <header>
+    <div class="logo"><b>O</b>RBIT</div>
+    <span class="chip v" id="reqVer">requirement v–</span>
+    <span class="chip off" id="conn">backend offline</span>
+    <div class="sp"></div>
+    <span class="chip">acting as</span>
+    <select id="actor"><option value="niharika">Niharika</option><option value="vaibhav">Vaibhav</option></select>
+    <button class="b" id="home">&larr; Back to Orbit</button>
+    <button class="b" id="reset">Reset demo</button>
   </header>
 
-  <div class="content">
+  <nav class="views" id="viewNav">
+    <button class="b vbtn act" data-view="overview">Overview</button>
+    <button class="b vbtn" data-view="ripple">Requirement</button>
+    <button class="b vbtn" data-view="nova">Nova</button>
+    <button class="b vbtn" data-view="atlas">Atlas</button>
+    <button class="b vbtn" data-view="steer">Proposals</button>
+    <button class="b vbtn" data-view="diff">Stale Guard</button>
+    <button class="b vbtn" data-view="xray">Recovery</button>
+    <button class="b vbtn" data-view="humans">Humans</button>
+    <button class="b vbtn" data-view="timeline">Timeline</button>
+  </nav>
 
-    <!-- PROJECT HEADER -->
+  <div id="story"><b>Story</b><span id="storyText">Waiting for the backend&hellip;</span></div>
 
-    <div class="project-heading">
-      <div>
-        <div class="eyebrow">COLLABORATIVE BUILD / PROJECT 001</div>
-        <h1>Launchpad</h1>
-        <p class="subtitle">
-          Building a smarter onboarding experience for early-stage startups.
-          <br>Last updated just now · Version <span id="version">1</span>
-        </p>
+  <section class="view act" id="view-overview">
+    <main>
+      <div class="col">
+        <div class="card">
+          <h3>Requirement</h3>
+          <div id="reqText" style="font-size:18px;margin-bottom:12px">–</div>
+          <div class="row" style="margin-bottom:8px"><select id="nodeSel" style="flex:none"></select><input id="reqIn" placeholder="Change requirement..." style="flex:1;min-width:0"></div>
+          <button class="b hot" id="reqBtn" style="width:100%">Push change to all agents</button>
+        </div>
+        <div class="card grow scroll"><h3>Dependency nodes</h3><div id="nodes"></div></div>
       </div>
 
-      <span class="status" id="projectStatus">● Active collaboration</span>
+      <div class="col">
+        <div class="card"><h3>Agents</h3><div id="agents"></div></div>
+        <div class="card grow scroll"><h3>Proposals &mdash; human decides</h3><div id="props"></div></div>
+      </div>
+
+      <div class="col">
+        <div class="card grow" style="min-height:300px">
+          <h3>Preview</h3>
+          <div class="tabs"><button class="b act" id="tabArt">Live artifact</button><button class="b" id="tabProp">Selected proposal</button></div>
+          <iframe id="frame" sandbox></iframe>
+        </div>
+        <div class="card scroll" style="height:230px"><h3>Timeline</h3><div id="events"></div></div>
+      </div>
+    </main>
+  </section>
+
+  <section class="view" id="view-ripple">
+    <div class="card grow" style="flex:1">
+      <h3>Ripple Graph &mdash; context reliability centerpiece</h3>
+      <div id="rippleWrap">
+        <svg id="rippleSvg" viewBox="0 0 900 460"></svg>
+        <div class="rreason" id="rippleReason"></div>
+      </div>
     </div>
+  </section>
 
-    <!-- SHARED REQUIREMENT -->
+  <section class="view" id="view-nova"><div class="col" style="flex:1" id="v-nova"></div></section>
+  <section class="view" id="view-atlas"><div class="col" style="flex:1" id="v-atlas"></div></section>
 
-    <div class="requirement">
-
-      <div class="req-left">
-        <div class="req-icon">◈</div>
-        <div>
-          <div class="req-title">Shared product requirement</div>
-          <div class="req-text" id="requirementText">
-            Build a simple onboarding landing page with a single primary call to action.
-          </div>
-        </div>
+  <section class="view" id="view-xray">
+    <div class="col" style="flex:1">
+      <div class="card row">
+        <div style="flex:1"><h3 style="margin:0 0 6px">Recovery &mdash; kill &amp; resume</h3>
+          <div style="color:var(--dim);font-size:13px">Kill an agent mid-flight. When it recovers, its context packet rebuilds line by line from everything that changed while it was down.</div></div>
+        <button class="b hot" id="xRebuild">Replay packet rebuild</button>
       </div>
-
-      <button class="btn primary" onclick="openRequirement()">
-        ✎ Change requirement
-      </button>
-
+      <main style="grid-template-columns:340px 1fr;flex:1">
+        <div class="col"><div class="card grow scroll"><h3>Agents</h3><div id="xagents"></div></div></div>
+        <div class="col"><div class="card grow scroll"><h3>Context packet</h3><div id="xrayBody"><div class="empty">Select an agent to inspect what it knows.</div></div></div></div>
+      </main>
     </div>
+  </section>
 
-    <!-- PEOPLE -->
-
-    <div class="section-label">
-      <h2>People & agents</h2>
-      <span>4 CONTRIBUTORS · SHARED CONTEXT</span>
+  <section class="view" id="view-diff">
+    <div class="col" style="flex:1">
+      <div class="card">
+        <h3>Before / After &mdash; live artifact vs a stale proposal</h3>
+        <div class="row">
+          <span class="chip">Comparing against:</span>
+          <select id="diffSel" style="flex:1"></select>
+        </div>
+      </div>
+      <div class="diffcols">
+        <div class="card diffpane">
+          <h4>Live artifact (current requirement)</h4>
+          <div class="difftext" id="diffAfter"></div>
+        </div>
+        <div class="card diffpane">
+          <h4>Stale proposal &mdash; what's outdated &amp; why</h4>
+          <div class="difftext" id="diffBefore"></div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="people">
+  <section class="view" id="view-steer">
+    <main style="grid-template-columns:repeat(3,minmax(0,1fr)) 340px">
+      <div class="col"><div class="card grow scroll"><h3>Pending <span class="chip" id="kbc-pending">0</span></h3><div id="kb-pending"></div></div></div>
+      <div class="col"><div class="card grow scroll"><h3>Stale <span class="chip" id="kbc-stale">0</span></h3><div id="kb-stale"></div></div></div>
+      <div class="col"><div class="card grow scroll"><h3>Approved <span class="chip" id="kbc-approved">0</span></h3><div id="kb-approved"></div></div></div>
+      <div class="col"><div class="card grow"><h3 id="steerTitle">Preview</h3><iframe id="steerFrame" sandbox></iframe></div></div>
+    </main>
+  </section>
 
-      <div class="person">
-        <div class="person-top">
-          <div class="person-avatar" style="background:#ead9c9;color:#594332">MC</div>
-          <div>
-            <h3>Maya Chen</h3>
-            <p>Founder · Product owner</p>
-          </div>
-        </div>
-        <div class="person-status"><span class="dot"></span> Making decisions</div>
+  <section class="view" id="view-humans">
+    <main style="grid-template-columns:minmax(0,1fr) minmax(0,1fr) 320px">
+      <div class="col" id="hp-niharika"></div>
+      <div class="col" id="hp-vaibhav"></div>
+      <div class="col"><div class="card grow scroll"><h3>Decision record</h3><div id="decisions"><div class="empty">No decisions logged yet.</div></div></div></div>
+    </main>
+  </section>
+
+  <section class="view" id="view-timeline">
+    <div class="col" style="flex:1">
+      <div class="card">
+        <h3>Timeline &mdash; full audit trail</h3>
+        <div class="row" style="margin-bottom:10px"><button class="b hot" id="tlPlay">&#9654; Replay</button><input type="range" id="tlRange" min="0" max="0" value="0" style="flex:1;padding:0"><span class="chip" id="tlPos">0 / 0</span></div>
+        <div class="chips" id="tlChips"></div>
       </div>
-
-      <div class="person">
-        <div class="person-top">
-          <div class="person-avatar" style="background:#d8e4ed;color:#35506a">LP</div>
-          <div>
-            <h3>Leo Park</h3>
-            <p>Product designer</p>
-          </div>
-        </div>
-        <div class="person-status"><span class="dot"></span> Reviewing prototype</div>
-      </div>
-
-      <div class="person">
-        <div class="person-top">
-          <div class="person-avatar" style="background:#e8dcf0;color:#75528b">A</div>
-          <div>
-            <h3>Atlas</h3>
-            <p>Research agent</p>
-          </div>
-        </div>
-        <div class="person-status" id="atlasStatus"><span class="dot"></span> Ready to research</div>
-      </div>
-
-      <div class="person">
-        <div class="person-top">
-          <div class="person-avatar" style="background:#dceadd;color:#467451">N</div>
-          <div>
-            <h3>Nova</h3>
-            <p>Prototype agent</p>
-          </div>
-        </div>
-        <div class="person-status" id="novaStatus"><span class="dot"></span> Ready to build</div>
-      </div>
-
+      <div class="card grow scroll"><div id="tlList"></div></div>
     </div>
-
-    <!-- MAIN WORKSPACE -->
-
-    <div class="workspace">
-
-      <!-- LEFT: PROTOTYPE -->
-
-      <div>
-
-        <div class="panel">
-
-          <div class="panel-header">
-            <h2>Shared prototype</h2>
-            <span id="prototypeVersion">VERSION 1.0</span>
-          </div>
-
-          <div class="prototype-body">
-
-            <div class="prototype-toolbar">
-              <span>Live preview · Launchpad landing page</span>
-              <span style="color:var(--green)">● Shared artifact</span>
-            </div>
-
-            <div class="preview" id="preview">
-
-              <div class="preview-nav">
-                <div class="preview-logo">launchpad.</div>
-                <div class="preview-links">
-                  <span>Features</span>
-                  <span>About</span>
-                  <span>Resources</span>
-                </div>
-                <span style="font-size:9px">Sign in ↗</span>
-              </div>
-
-              <div class="preview-hero" id="previewHero">
-
-                <div class="eyebrow">YOUR STARTUP STARTS HERE</div>
-
-                <h2 id="previewTitle">Everything you need to build your startup.</h2>
-
-                <p id="previewDescription">
-                  One workspace to organize your ideas, manage your team
-                  and turn your vision into reality.
-                </p>
-
-                <button class="preview-cta" id="previewCTA">Get started free ↗</button>
-                <span class="preview-secondary" id="previewSecondary">No credit card required</span>
-
-              </div>
-
-              <div class="preview-features">
-
-                <div class="feature-card">
-                  <strong>01. Plan</strong>
-                  <p>Organize your goals and product direction.</p>
-                </div>
-
-                <div class="feature-card">
-                  <strong>02. Build</strong>
-                  <p>Bring your ideas to life with your team.</p>
-                </div>
-
-                <div class="feature-card">
-                  <strong>03. Grow</strong>
-                  <p>Track progress and move forward.</p>
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="prototype-meta">
-              <span>Edited by <strong id="lastEditor">Nova</strong></span>
-              <span id="prototypeState">● Current version</span>
-            </div>
-
-            <!-- AGENT PROPOSAL -->
-
-            <div class="proposal" id="proposal">
-
-              <div class="proposal-top">
-                <h3 id="proposalTitle">Nova's prototype proposal</h3>
-                <span class="tag" id="proposalTag">AWAITING REVIEW</span>
-              </div>
-
-              <p id="proposalText">
-                Replace the generic headline with a startup-focused message
-                and clarify the product's core value.
-              </p>
-
-              <div class="proposal-actions">
-                <button class="btn approve" id="approveBtn" onclick="approveProposal()">
-                  ✓ Approve proposal
-                </button>
-                <button class="btn reject" onclick="rejectProposal()">
-                  ✕ Reject
-                </button>
-                <button class="btn" onclick="redirectProposal()">
-                  ↗ Redirect
-                </button>
-              </div>
-
-            </div>
-
-            <!-- DECISION -->
-
-            <div class="decision">
-              <h3>Human decision required</h3>
-              <p id="decisionText">
-                The prototype is awaiting review. Maya or Leo can approve,
-                reject or redirect Nova's contribution.
-              </p>
-              <span class="eyebrow" id="decisionOwner">DECISION OWNER · MAYA CHEN / LEO PARK</span>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- ACTIVITY TIMELINE -->
-
-        <div class="section-label">
-          <h2>Collaboration timeline</h2>
-          <span>SHARED EVENT LOG</span>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <h2>What is happening</h2>
-            <span>LIVE ACTIVITY</span>
-          </div>
-          <div class="timeline" id="timeline"></div>
-        </div>
-
-      </div>
-
-      <!-- RIGHT: AGENTS AND CONTEXT -->
-
-      <div class="right-column">
-
-        <div class="panel">
-
-          <div class="panel-header">
-            <h2>Agent activity</h2>
-            <span>PARALLEL WORK</span>
-          </div>
-
-          <div class="agent-work">
-
-            <div class="agent-item">
-              <div class="agent-row">
-                <div class="agent-name">
-                  <div class="mini-avatar" style="background:#e8dcf0;color:#75528b">A</div>
-                  Atlas · Research
-                </div>
-                <span class="agent-state" id="atlasWorkState">IDLE</span>
-              </div>
-
-              <p id="atlasWorkText">Waiting for research task.</p>
-
-              <div class="progress">
-                <div id="atlasProgress" style="width:0%"></div>
-              </div>
-            </div>
-
-            <div class="agent-item">
-              <div class="agent-row">
-                <div class="agent-name">
-                  <div class="mini-avatar" style="background:#dceadd;color:#467451">N</div>
-                  Nova · Prototype
-                </div>
-                <span class="agent-state" id="novaWorkState">IDLE</span>
-              </div>
-
-              <p id="novaWorkText">Waiting for build task.</p>
-
-              <div class="progress">
-                <div id="novaProgress" style="width:0%"></div>
-              </div>
-            </div>
-
-            <button class="btn primary" style="width:100%;margin-top:12px" onclick="startAgents()">
-              ▶ Start parallel agents
-            </button>
-
-          </div>
-
-        </div>
-
-        <!-- CONTEXT RECOVERY -->
-
-        <div class="panel">
-
-          <div class="panel-header">
-            <h2>Shared context memory</h2>
-            <span id="contextVersion">V1</span>
-          </div>
-
-          <div class="context-box">
-
-            <div class="eyebrow">RECOVERABLE PROJECT CONTEXT</div>
-
-            <p>
-              Every agent reads from the same project context,
-              including current requirements, approved decisions,
-              rejected proposals and artifact versions.
-            </p>
-
-            <div class="context-details" id="contextDetails">
-              <strong>PROJECT:</strong> Launchpad<br>
-              <strong>GOAL:</strong> Startup onboarding<br>
-              <strong>VERSION:</strong> 1<br>
-              <strong>STATUS:</strong> In progress<br>
-              <strong>REQUIREMENT:</strong> Simple landing page
-            </div>
-
-            <button class="btn" style="width:100%;margin-top:12px" onclick="recoverContext()">
-              ↻ Recover agent context
-            </button>
-
-          </div>
-
-        </div>
-
-        <!-- VERSION HISTORY -->
-
-        <div class="panel">
-
-          <div class="panel-header">
-            <h2>Version history</h2>
-            <span>ARTIFACT LOG</span>
-          </div>
-
-          <div class="timeline" id="versions">
-            <div class="event">
-              <div class="event-dot"></div>
-              <div>
-                <p><strong>Version 1.0</strong> — Initial prototype</p>
-                <small>Created by Nova · Initial state</small>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</main>
+  </section>
 </div>
 
-<!-- REQUIREMENT MODAL -->
 
-<div class="modal-overlay" id="requirementModal">
-
-  <div class="modal">
-
-    <div class="eyebrow">HUMAN INPUT / PRODUCT DIRECTION</div>
-
-    <h2>Change the requirement.</h2>
-
-    <p>
-      Maya can update the shared requirement. Agents will be notified,
-      and contributions based on the previous version will be revalidated.
-    </p>
-
-    <label>New product requirement</label>
-
-    <textarea id="requirementInput">The onboarding experience must be designed specifically for first-time startup founders, with a guided three-step setup and a prominent free trial CTA.</textarea>
-
-    <div class="modal-actions">
-      <button class="btn" onclick="closeRequirement()">Cancel</button>
-      <button class="btn primary" onclick="changeRequirement()">Publish change ↗</button>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- TOAST -->
-
-<div class="toast" id="toast"></div>
-
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
-
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
