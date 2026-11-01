@@ -319,16 +319,19 @@ async def run_agent(agent_id, ctx, instruction, redirect_of):
     except asyncio.CancelledError:
         return
     result = None
+    fallback_reason = "agents.py failed to import" if not generate_with_llm else None
     if generate_with_llm:
         try:
             result = await asyncio.wait_for(
                 asyncio.to_thread(generate_with_llm, agent_id, ctx, instruction),
                 timeout=40)
         except Exception as e:
-            print(f"LLM failed, using template fallback: {e}")
+            fallback_reason = f"{type(e).__name__}: {e}" or type(e).__name__
+            print(f"LLM failed, using template fallback: {fallback_reason}")
             result = None
     if result is None:
         result = generate(agent_id, ctx, instruction)  # template fallback
+        result["rationale"] = f"[TEMPLATE FALLBACK - {fallback_reason}] " + result["rationale"]
     await submit_proposal(agent_id, ctx, result, instruction, redirect_of)
 
 
